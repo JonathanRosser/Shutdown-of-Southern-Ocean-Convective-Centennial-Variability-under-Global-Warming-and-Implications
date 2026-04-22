@@ -127,7 +127,7 @@ def source_plot(institution_id,source_id,control_expt_id,control_variant_id,vari
         length=len(data[j])
         data_array[j,:length]=data[j]
     indices=np.arange(1850,1850+max_len,1)
-    plt.plot(indices,np.nanstd(data_array,axis=0),color="k")
+    plt.plot(indices,np.nanstd(data_array,axis=0),color="k",label="Hist")
     expt_id="ssp119"
     data=[]
     min_len=300
@@ -281,10 +281,10 @@ def source_plot(institution_id,source_id,control_expt_id,control_variant_id,vari
     ssp585_indices=indices
     ssp585_values=np.nanstd(data_array,axis=0)
 
-    plt.plot(ssp119_indices,ssp119_values,color="blue")
-    plt.plot(ssp126_indices,ssp126_values,color="midnightblue")
-    plt.plot(ssp245_indices,ssp245_values,color="darkorange")
-    plt.plot(ssp585_indices,ssp585_values,color="darkred")
+    plt.plot(ssp119_indices,ssp119_values,color="blue",label="SSP119")
+    plt.plot(ssp126_indices,ssp126_values,color="midnightblue",label="SSP126")
+    plt.plot(ssp245_indices,ssp245_values,color="darkorange",label="SSP245")
+    plt.plot(ssp585_indices,ssp585_values,color="darkred",label="SSP585")
     plt.title(source_id)
     plt.xticks(())
     #plt.xticks(np.array((0,30,60,90,150,180,210,240)),("0","30","60","90","150","180","210","240"))
@@ -320,7 +320,7 @@ TitleArray=["Ross mean mld", "Mean mld south of 50S/m", "Weddell max mld", "Wedd
 #TitleArray=["acc","siarea","avgmldd0","maxmldd0","w_avgmldd0","r_avgmldd0","lowercircrhon2","uppercircrhon2","weddellgyre","weddellgyreuo","rossgyre","rossgyreuo"]
 
 VariableArray=["acc","maxmldd0","lowercircrhon2","lowercircrhon2uo"]
-TitleArray=["ACC/ Sv","maxmldd0","lowercircrhon2","lowercircrhon2uo"]
+TitleArray=["Antarctic Circumpolar Current Std/ Sv","maxmldd0","lowercircrhon2","lowercircrhon2uo"]
 
 #VariableArray=["weddellgyre","weddellgyreuo"]
 #TitleArray=["Weddell Gyre/(kg/s)","Weddell Gyre/(kg/s)"]
@@ -444,7 +444,7 @@ ssp585_variant_id_list_of_lists=[
         ]
 
 data_path="/home/jonathan/Documents/Data_Improved/"
-save_location="/home/jonathan/Documents/Figures/Future/scenario_combined_All_Variables_Annual/"
+save_location="/home/jonathan/Documents/Figures/Forced_Paper/"
 
 for i in range(0,1):
     var_name =VariableArray[i]
@@ -457,5 +457,6 @@ for i in range(0,1):
     plt.xlabel("time/years")
     plt.xlabel("time/years")
     plt.ylabel(title_name)
+    plt.legend()
     plt.savefig(save_location+var_name+"_Scenario_Separate_Stacked_variability.pdf",dpi=300)
      

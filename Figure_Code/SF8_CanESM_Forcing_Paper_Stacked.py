@@ -40,7 +40,7 @@ VariantArray=["r1i1p1f1", "r1i1p1f1", "r1i1p1f2", "r1i1p1f1", "r1i1p1f1", "r1i1p
 VariableArray=['acc','avgdensity40s50s','avgdensity65','wwmax','maxmld','lowercircrhon','h65s']
 
 
-TitleArray=['ACC/Sv',"Average Density \n40$^{\circ}$S-50$^{\circ}$S/kgm$^{-3}$","Average Density \n south of 65$^{\circ}$S/kgm$^{-3}$",'Max Westerly Wind Stress/(Nm$^{-2}$)','Maximum Southern Ocean \n Mixed Layer Depth/m','Lower Circulation/(kg/s)','Ocean Heat South of 65$^{\circ}$S/J']
+TitleArray=['ACC/Sv',"Average Density \n40$^{\circ}$S-50$^{\circ}$S/kgm$^{-3}$","Average Density \n south of 65$^{\circ}$S/kgm$^{-3}$",'Max Westerly Wind \nStress/(Nm$^{-2}$)','Maximum Southern Ocean \n Mixed Layer Depth/m','Lower Circulation/Sv','Ocean Heat South of 65$^{\circ}$S/ZJ']
 
 min_line_values=(54, 148, 235, 337, 429, 546, 637, 740, 832, 932)
 max_line_values=(4, 101, 194, 290, 387, 502, 597,694, 780,881, 983)
@@ -76,7 +76,12 @@ for i in range(1,2):
             print(glob.glob("/home/jonathan/Documents/Data/"+source_id+"/"+expt_id+"/"+variant_id+"/"+rpa+"/"+var_name+"/"+var_name+"_"+rpa+"_concat_"+freq+"_"+spatial+"_"+source_name+"*.nc")[0])
             Y=xr.open_dataset(glob.glob("/home/jonathan/Documents/Data/"+source_id+"/"+expt_id+"/"+variant_id+"/"+rpa+"/"+var_name+"/"+var_name+"_"+rpa+"_concat_"+freq+"_"+spatial+"_"+source_name+"*.nc")[0])
             X=Y.get(var_name)
-            values=X.values
+            if var_name=="lowercircrhon":
+                values=X.values/10**9
+            elif var_name=="h65s":
+                values=X.values/10**21
+            else:
+                values=X.values
             annual_mean=np.zeros((int(len(values)/120)))
             annual_mean=np.mean(np.reshape(values[:(int(len(values)/12))*12],(int(len(values)/12),12)),axis=1)
             decadal_mean=run_avg(annual_mean,period)
@@ -86,7 +91,12 @@ for i in range(1,2):
             Y=xr.open_mfdataset("/home/jonathan/Documents/Data/"+source_id+"/"+expt_id+"/"+variant_id+"/"+rpa+"/"+var_name+"/"+var_name+"_"+rpa+"*.nc")
 
             X=Y.get(var_name)
-            values=X.values
+            if var_name=="lowercircrhon":
+                values=X.values/10**9
+            elif var_name=="h65s":
+                values=X.values/10**21
+            else:
+                values=X.values
             annual_mean=np.zeros((int(len(values)/12)))
             annual_mean=np.mean(np.reshape(values[:(int(len(values)/12))*12],(int(len(values)/12),12)),axis=1)
             decadal_mean=run_avg(annual_mean,period)
@@ -122,7 +132,7 @@ for i in range(1,2):
         axs[k].plot(np.arange(0,500),plot_data[:500],label=names[k],color='k')
         axs[k].label_outer()
         axs[k].set_ylabel(names[k],fontsize=18,rotation=60,labelpad=80,wrap=True)
-        axs[k].tick_params(axis='both',which='major',labelsize=14)
+        axs[k].tick_params(axis='both',which='major',labelsize=18)
         for l in range(0,len(min_line_values)):
             axs[k].axvline(x=min_line_values[l],color='b',alpha=0.4)
         for l in range(0,len(max_line_values)):
@@ -132,7 +142,7 @@ for i in range(1,2):
         if k !=0:
             x_text_position = axs[k].get_xlim()[0] + 0.05 * (axs[k].get_xlim()[1] - axs[k].get_xlim()[0])
             y_text_position = axs[k].get_ylim()[0] + 0.90 * (axs[k].get_ylim()[1] - axs[k].get_ylim()[0])
-            axs[k].text(x_text_position,y_text_position,"corr: "+str(lag_corr_mag)[:5]+" lag: "+str(lag_position[0]),fontsize=14)
+            axs[k].text(x_text_position,y_text_position,"corr: "+str(lag_corr_mag)[:5]+" lag: "+str(lag_position[0]),fontsize=18)
     axs[NumVar-1].set_xlabel("Time/years",fontsize=18)
     plt.tight_layout(rect=[0.01, 0.01, 1, 0.95])
     #plt.show()

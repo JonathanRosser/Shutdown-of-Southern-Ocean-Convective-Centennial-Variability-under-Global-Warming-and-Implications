@@ -180,6 +180,7 @@ for i in range(0,len(VariableArray)):
             for l in range(0,len(data)):
                 length=len(data[l])
                 data_array[l,:length]=data[l]
+            data_array[data_array == 0] = np.nan
             axs[i].plot(np.nanstd(data_array,axis=0),color="k",linestyle="dashed")
 
         elif j==1:
@@ -207,6 +208,7 @@ for i in range(0,len(VariableArray)):
             for j in range(0,len(data)):
                 length=len(data[j])
                 data_array[j,:length]=data[j]
+            data_array[data_array == 0] = np.nan
             axs[i].plot(np.nanstd(data_array,axis=0),color="k")
     axs[i].set_xticks(ticks=(0,20,40,60,80,100,120,140))
     axs[i].set_xlim(-10,140)
